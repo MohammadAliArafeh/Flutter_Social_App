@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightTheme,
+        darkTheme: darkTheme,
         // ignore: prefer_const_constructors
         home: widget,
       ),
