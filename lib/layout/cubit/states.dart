@@ -35,3 +35,12 @@ class HomeUpdateProfileImageLoadingState extends HomeStates{}
 class HomeUpdateUserSuccessState extends HomeStates{}
 class HomeUpdateUSerErrorState extends HomeStates{}
 class HomeUpdateUserLoadingState extends HomeStates{}
+// get post image
+class HomeGetPostImageSuccessState extends HomeStates{}
+class HomeGetPostImageErrorState extends HomeStates{}
+// remove post image
+class HomeRemovePostImageSuccessState extends HomeStates{}
+// create post
+class HomeCreatePostSuccessState extends HomeStates{}
+class HomeCreatePostErrorState extends HomeStates{}
+class HomeCreatePostLoadingState extends HomeStates{}

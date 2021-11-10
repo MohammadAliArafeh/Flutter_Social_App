@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/models/post_model.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/chats/chats_screen.dart';
 import 'package:social_app/modules/feeds/feeds_screen.dart';
@@ -79,7 +80,7 @@ class HomeCubit extends Cubit<HomeStates> {
         .doc(userModel!.uId)
         .update(model.toMap())
         .then((value) {
-          print('update done');
+      print('update done');
       getUser();
     }).catchError((error) {
       emit(HomeUpdateUSerErrorState());
@@ -95,7 +96,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
     if (pickedImage != null) {
       profileImage = File(pickedImage.path);
-      print('changeImageProfile'+profileImage!.path);
+      print('changeImageProfile' + profileImage!.path);
       emit(HomeProfileImagePickedSuccessState());
     } else {
       print('image does bot picked');
@@ -108,7 +109,7 @@ class HomeCubit extends Cubit<HomeStates> {
 
     if (pickedImage != null) {
       profileCoverImage = File(pickedImage.path);
-      print('changeCoverImageProfile'+profileCoverImage!.path);
+      print('changeCoverImageProfile' + profileCoverImage!.path);
       emit(HomeProfileCoverImagePickedSuccessState());
     } else {
       print('image does bot picked');
@@ -135,7 +136,7 @@ class HomeCubit extends Cubit<HomeStates> {
           bio: bio,
           image: val,
         );
-        print('updateImageProfile'+val);
+        print('updateImageProfile' + val);
       }).catchError((error) {
         emit(HomeUpdateProfileImageErrorState());
       });
@@ -163,12 +164,79 @@ class HomeCubit extends Cubit<HomeStates> {
           bio: bio,
           coverImage: val,
         );
-        print('updateCoverImageProfile'+val);
+        print('updateCoverImageProfile' + val);
       }).catchError((error) {
         emit(HomeUpdateProfileCoverImageErrorState());
       });
     }).catchError((error) {
       emit(HomeUpdateProfileCoverImageErrorState());
+    });
+  }
+
+  File? postImage;
+
+  void getPostImage() async {
+    XFile? pickImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickImage != null) {
+      postImage = File(pickImage.path);
+      emit(HomeGetPostImageSuccessState());
+    } else {
+      emit(HomeGetPostImageErrorState());
+    }
+  }
+
+  void removePostImage() {
+    postImage = null;
+    emit(HomeRemovePostImageSuccessState());
+  }
+
+  void uploadPostImage({
+    required String dateTime,
+    required String postText,
+  }) {
+    emit(HomeCreatePostLoadingState());
+
+    FirebaseStorage.instance
+        .ref()
+        .child('posts/${Uri.file(postImage!.path).pathSegments.last}')
+        .putFile(postImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        createPost(
+          dateTime: dateTime,
+          postText: postText,
+          postImage: value,
+        );
+      }).catchError((error) {
+        emit(HomeCreatePostErrorState());
+      });
+    }).catchError((error) {
+      emit(HomeCreatePostErrorState());
+    });
+  }
+
+  void createPost({
+    required String dateTime,
+    required String postText,
+    String? postImage,
+  }) {
+    emit(HomeCreatePostLoadingState());
+    PostModel postModel = PostModel(
+        name: userModel!.name,
+        image: userModel!.image,
+        uId: userModel!.uId,
+        dateTime: dateTime,
+        postText: postText,
+        postImage: postImage ?? '');
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .add(postModel.toMap())
+        .then((value) {
+      emit(HomeCreatePostSuccessState());
+    }).catchError((error) {
+      emit(HomeCreatePostErrorState());
     });
   }
 }
