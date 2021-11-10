@@ -239,4 +239,19 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(HomeCreatePostErrorState());
     });
   }
+
+  List<PostModel> posts = [];
+
+  void getPosts() {
+    emit(HomeGetPostsLoadingState());
+
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        posts.add(PostModel.fromJson(element.data()));
+      });
+      emit(HomeGetPostImageSuccessState());
+    }).catchError((error) {
+      emit(HomeGetPostsErrorState(error.toString()));
+    });
+  }
 }

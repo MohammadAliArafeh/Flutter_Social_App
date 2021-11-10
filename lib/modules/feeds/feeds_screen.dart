@@ -1,59 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/cubit/cubit.dart';
+import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/models/post_model.dart';
 import 'package:social_app/shared/styles/colors.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
 class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Column(
-          children: [
-            Card(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              elevation: 4,
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Image(
-                    image: NetworkImage(
-                        'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg'),
-                    fit: BoxFit.cover,
-                    height: 200,
-                    width: double.infinity,
+    return BlocConsumer<HomeCubit, HomeStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = HomeCubit.get(context);
+        return SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+              children: [
+                Card(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  elevation: 4,
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Image(
+                        image: NetworkImage(
+                            'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg'),
+                        fit: BoxFit.cover,
+                        height: 200,
+                        width: double.infinity,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Communicate With your friends',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(color: Colors.white, fontSize: 14),
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Communicate With your friends',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1!
-                          .copyWith(color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                cubit.posts.length > 0
+                    ? ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => buildPostItem(cubit.posts[index],context),
+                        separatorBuilder: (context, index) => const SizedBox(
+                              height: 6,
+                            ),
+                        itemCount: cubit.posts.length)
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+              ],
             ),
-            ListView.separated(
-              shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) => buildPostItem(context),
-                separatorBuilder: (context, index) => const SizedBox(
-                      height: 6,
-                    ),
-                itemCount: 10)
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  Widget buildPostItem(context) => Card(
+  Widget buildPostItem(PostModel model ,context) => Card(
         elevation: 4,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(4.0),
@@ -62,7 +77,7 @@ class FeedsScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 25,
                     backgroundImage: NetworkImage(
-                        'https://image.freepik.com/free-photo/horizontal-shot-pretty-curly-haired-afro-american-woman-looks-positively-aside-has-tender-smile-wears-casual-anorak-looks-away-joyfully-being-good-mood-isolated-pink-wall_273609-42424.jpg'),
+                        '${model.image}'),
                   ),
                   SizedBox(
                     width: 8,
@@ -74,7 +89,7 @@ class FeedsScreen extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Mohammad Ali Arafeh',
+                              '${model.name}',
                               style: Theme.of(context).textTheme.subtitle1,
                             ),
                             SizedBox(
@@ -88,7 +103,7 @@ class FeedsScreen extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          'January 12, 2021 04:00 pm',
+                          '${model.dateTime}',
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ],
@@ -114,50 +129,51 @@ class FeedsScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
+                '${model.postText}',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Container(
-                width: double.infinity,
-                child: Wrap(
-                  children: [
-                    Container(
-                      height: 25,
-                      child: MaterialButton(
-                        padding: EdgeInsets.only(left: 4, top: 6, bottom: 4),
-                        child: Text(
-                          '#software',
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(color: defaultColor),
-                        ),
-                        minWidth: 1.0,
-                        onPressed: () {},
-                      ),
-                    ),
-                    Container(
-                      height: 25,
-                      child: MaterialButton(
-                        padding: EdgeInsets.only(left: 4, top: 6, bottom: 4),
-                        child: Text(
-                          '#flutter',
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption!
-                              .copyWith(color: defaultColor),
-                        ),
-                        minWidth: 1.0,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: 5),
+            //   child: Container(
+            //     width: double.infinity,
+            //     child: Wrap(
+            //       children: [
+            //         Container(
+            //           height: 25,
+            //           child: MaterialButton(
+            //             padding: EdgeInsets.only(left: 4, top: 6, bottom: 4),
+            //             child: Text(
+            //               '#software',
+            //               style: Theme.of(context)
+            //                   .textTheme
+            //                   .caption!
+            //                   .copyWith(color: defaultColor),
+            //             ),
+            //             minWidth: 1.0,
+            //             onPressed: () {},
+            //           ),
+            //         ),
+            //         Container(
+            //           height: 25,
+            //           child: MaterialButton(
+            //             padding: EdgeInsets.only(left: 4, top: 6, bottom: 4),
+            //             child: Text(
+            //               '#flutter',
+            //               style: Theme.of(context)
+            //                   .textTheme
+            //                   .caption!
+            //                   .copyWith(color: defaultColor),
+            //             ),
+            //             minWidth: 1.0,
+            //             onPressed: () {},
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            if(model.postImage != '')
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Container(
@@ -167,7 +183,7 @@ class FeedsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                       image: DecorationImage(
                         image: NetworkImage(
-                            'https://image.freepik.com/free-photo/horizontal-shot-smiling-curly-haired-woman-indicates-free-space-demonstrates-place-your-advertisement-attracts-attention-sale-wears-green-turtleneck-isolated-vibrant-pink-wall_273609-42770.jpg'),
+                            '${model.postImage}'),
                         fit: BoxFit.cover,
                       ))),
             ),
@@ -260,7 +276,7 @@ class FeedsScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 18.0,
                             backgroundImage: NetworkImage(
-                              'https://image.freepik.com/free-photo/horizontal-shot-pretty-curly-haired-afro-american-woman-looks-positively-aside-has-tender-smile-wears-casual-anorak-looks-away-joyfully-being-good-mood-isolated-pink-wall_273609-42424.jpg',
+                              '${model.image}',
                             ),
                           ),
                           SizedBox(
