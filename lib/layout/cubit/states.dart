@@ -15,3 +15,23 @@ class HomeGetUserErrorState extends HomeStates{
 
   HomeGetUserErrorState(this.error);
 }
+// pick image
+class HomeProfileImagePickedSuccessState extends HomeStates{}
+class HomeProfileImagePickedErrorState extends HomeStates{}
+class HomeProfileImagePickedLoadingState extends HomeStates{}
+//pick cover image
+class HomeProfileCoverImagePickedSuccessState extends HomeStates{}
+class HomeProfileCoverImagePickedErrorState extends HomeStates{}
+class HomeProfileCoverImagePickedLoadingState extends HomeStates{}
+// update image
+class HomeUpdateProfileCoverImageSuccessState extends HomeStates{}
+class HomeUpdateProfileCoverImageErrorState extends HomeStates{}
+class HomeUpdateProfileCoverImageLoadingState extends HomeStates{}
+// update cover image
+class HomeUpdateProfileImageSuccessState extends HomeStates{}
+class HomeUpdateProfileImageErrorState extends HomeStates{}
+class HomeUpdateProfileImageLoadingState extends HomeStates{}
+// update user
+class HomeUpdateUserSuccessState extends HomeStates{}
+class HomeUpdateUSerErrorState extends HomeStates{}
+class HomeUpdateUserLoadingState extends HomeStates{}

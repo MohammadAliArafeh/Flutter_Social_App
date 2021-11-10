@@ -12,7 +12,7 @@ class HomeLayout extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
         if(state is HomeAddNewPost){
-          navigateTo(context, NewPost());
+          navigateTo(context, NewPostScreen());
         }
       },
       builder: (context, state) {

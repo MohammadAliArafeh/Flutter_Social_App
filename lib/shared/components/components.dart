@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/shared/styles/colors.dart';
+import 'package:social_app/shared/styles/icon_broken.dart';
 
 void pushAndFinish(context, widget) async{
  await Navigator.pushAndRemoveUntil(context,
@@ -11,6 +12,24 @@ void navigateTo(context, widget) {
   Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => widget),
+  );
+}
+
+ AppBar defaultAppBar({
+  required BuildContext context,
+  String? title,
+  List<Widget>? actions,
+}){
+  return AppBar(
+    title: Text(title!),
+    actions: actions,
+    titleSpacing: 0.0,
+    leading: IconButton(
+      icon: Icon(IconBroken.Arrow___Left_2),
+      onPressed: (){
+        Navigator.pop(context);
+      },
+    ),
   );
 }
 
