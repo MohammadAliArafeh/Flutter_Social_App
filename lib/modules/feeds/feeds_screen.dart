@@ -127,7 +127,7 @@ class FeedsScreen extends StatelessWidget {
                     Container(
                       height: 25,
                       child: MaterialButton(
-                        padding: EdgeInsets.only(left: 4, top: 6, bottom: 6),
+                        padding: EdgeInsets.only(left: 4, top: 6, bottom: 4),
                         child: Text(
                           '#software',
                           style: Theme.of(context)
@@ -142,7 +142,7 @@ class FeedsScreen extends StatelessWidget {
                     Container(
                       height: 25,
                       child: MaterialButton(
-                        padding: EdgeInsets.only(left: 4, top: 6, bottom: 6),
+                        padding: EdgeInsets.only(left: 4, top: 6, bottom: 4),
                         child: Text(
                           '#flutter',
                           style: Theme.of(context)
