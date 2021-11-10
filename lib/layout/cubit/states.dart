@@ -5,11 +5,9 @@ class HomeInitialState extends HomeStates{}
 class HomeChangeBottomNavBarIndex extends HomeStates{}
 
 class HomeAddNewPost extends HomeStates{}
-
+// get user
 class HomeGetUserLoadingState extends HomeStates{}
-
 class HomeGetUserSuccessState extends HomeStates{}
-
 class HomeGetUserErrorState extends HomeStates{
   final String error;
 
@@ -44,3 +42,11 @@ class HomeRemovePostImageSuccessState extends HomeStates{}
 class HomeCreatePostSuccessState extends HomeStates{}
 class HomeCreatePostErrorState extends HomeStates{}
 class HomeCreatePostLoadingState extends HomeStates{}
+// get posts
+class HomeGetPostsLoadingState extends HomeStates{}
+class HomeGetPostsSuccessState extends HomeStates{}
+class HomeGetPostsErrorState extends HomeStates{
+  final String error;
+
+  HomeGetPostsErrorState(this.error);
+}
