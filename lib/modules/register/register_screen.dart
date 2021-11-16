@@ -5,6 +5,7 @@ import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/modules/register/cubit/cubit.dart';
 import 'package:social_app/modules/register/cubit/states.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -21,6 +22,7 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
           if(state is RegisterCreateUserSuccessState){
+            CacheHelper.setData(key: 'uId', value: state.userModel.uId);
             pushAndFinish(context, HomeLayout());
           }
         },
@@ -155,6 +157,7 @@ class RegisterScreen extends StatelessWidget {
                                       password: passwordController.text,
                                       name: nameController.text,
                                       phone: phoneController.text);
+
                                 }
                               },
                               text: 'register',

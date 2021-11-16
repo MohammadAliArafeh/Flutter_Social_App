@@ -13,6 +13,14 @@ class HomeGetUserErrorState extends HomeStates{
 
   HomeGetUserErrorState(this.error);
 }
+// get all user
+class HomeGetAllUsersLoadingState extends HomeStates{}
+class HomeGetAllUsersSuccessState extends HomeStates{}
+class HomeGetAllUsersErrorState extends HomeStates{
+  final String error;
+
+  HomeGetAllUsersErrorState(this.error);
+}
 // pick image
 class HomeProfileImagePickedSuccessState extends HomeStates{}
 class HomeProfileImagePickedErrorState extends HomeStates{}
@@ -50,3 +58,11 @@ class HomeGetPostsErrorState extends HomeStates{
 
   HomeGetPostsErrorState(this.error);
 }
+// send message
+class HomeSendMessageSuccessState extends HomeStates{}
+class HomeSendMessageErrorState extends HomeStates{}
+// send all messages
+class HomeSendAllMessagesSuccessState extends HomeStates{}
+class HomeSendAllMessagesErrorState extends HomeStates{}
+// get messages
+class HomeGetAllMessagesSuccessState extends HomeStates{}
